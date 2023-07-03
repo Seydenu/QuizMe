@@ -634,6 +634,7 @@ const questions = {
     }
     // Add more programming questions here...
   ]
+  
 }
 
 // Function to generate random questions
@@ -682,22 +683,26 @@ function calculateScore() {
 
   questions.forEach((question, index) => {
     const selectedOption = question.querySelector(`input[name=q${index}]:checked`);
-    if (selectedOption && selectedOption.value === questions[index].answer) {
+    const correctOption = questions[index].answer; // Retrieve the correct answer
+
+    if (selectedOption && selectedOption.value === correctOption) {
       score++;
       question.style.color = 'green';
     } else if (selectedOption) {
       question.style.color = 'red';
     } else {
-      question.style.color = 'black'; // Added line to reset color to black for unanswered questions
+      question.style.color = 'black';
     }
   });
 
+  const scorePercentage = Math.round((score / questions.length) * 100); // Calculate the score percentage
   const scoreElement = document.createElement('p');
-  scoreElement.textContent = `Your score: ${score} out of ${questions.length}`;
+  scoreElement.textContent = `CONGRATULATIONS! Your score is: ${scorePercentage}%`;
   quizContainer.appendChild(scoreElement);
 
   clearInterval(timerInterval);
 }
+
 
 // Function to start the countdown timer
 function startTimer(duration, displayElement) {
@@ -721,7 +726,7 @@ function startTimer(duration, displayElement) {
 }
 
 // Set the number of questions and duration for the quiz
-const numberOfQuestions = 20;
+const numberOfQuestions = questions.length;
 const quizDurationInSeconds = 600;
 
 // Get the container element for the quiz and display the questions
